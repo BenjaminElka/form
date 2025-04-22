@@ -78,7 +78,8 @@
 import { joiResolver } from '@hookform/resolvers/joi';
 import { Button, FloatingLabel } from 'flowbite-react';
 import { useForm } from 'react-hook-form';
-import { loginSchema } from './validations/login.joi';
+import { registerSchema } from './validations/register.joi';
+
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -88,7 +89,7 @@ type FormData = {
   password: string;
   name: string;
   phone: string;
-  biz: boolean;
+  isBusiness: boolean;
 };
 
 export default function App() {
@@ -102,13 +103,17 @@ export default function App() {
       password: '',
       name: '',
       phone: '',
-      biz: false,
+      isBusiness: false,
     },
     mode: 'onChange',
-    resolver: joiResolver(loginSchema),
+    resolver: joiResolver(registerSchema),
   });
 
   const submitForm = async (data: FormData) => {
+    console.log(data);
+    console.log(isValid);
+    if (!isValid  ) return
+    
     try {
       const response = await axios.post(
         'https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/login',
@@ -177,16 +182,16 @@ export default function App() {
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
-            {...register('biz')}
+            {...register('isBusiness')}
             className="form-checkbox"
           />
           Business Account
         </label>
-        {errors.biz && (
-          <p className="text-sm text-red-500">{errors.biz.message}</p>
+        {errors.isBusiness && (
+          <p className="text-sm text-red-500">{errors.isBusiness.message}</p>
         )}
 
-        <Button type="submit" className="w-full" disabled={!isValid}>
+        <Button type="submit" className="w-full" >
           Submit
         </Button>
       </form>

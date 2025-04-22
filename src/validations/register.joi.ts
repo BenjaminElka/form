@@ -1,13 +1,9 @@
 import Joi from "joi";
 
 export const registerSchema = Joi.object({
-    name: Joi.object()
-        .keys({
-            first: Joi.string().min(2).max(256).required(),
-            middle: Joi.string().min(2).max(256).allow(""),
-            last: Joi.string().min(2).max(256).required(),
-        })
-        .required(),
+    name: Joi.string().min(2).max(256).required()           
+      
+        ,
 
     phone: Joi.string()
         .ruleset.regex(/^0[2-9]\d{7,8}$/)
